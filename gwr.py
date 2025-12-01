@@ -2,6 +2,8 @@
 
 __author__ = "Taylor Oshan Tayoshan@gmail.com"
 
+# _local_fit function & GWR init method modified by victor irekponor vireks@terpmail.umd.edu
+
 import copy
 import numpy as np
 import numpy.linalg as la
@@ -266,52 +268,8 @@ class GWR(GLM):
 
         return wi
         
-    # def _local_fit(self, i):
-    #     """
-    #     Local fitting at location i.
-    #     """
-    #     wi = self._build_wi(i, self.bw).reshape(-1, 1)  # local spatial weights
-    #     # stx = (self.X - self.X.mean()) / self.X.std()
 
-    #     if isinstance(self.family, Gaussian):
-    #         if self.lwcc == True:
-    #             betas, inv_xtx_xt, X_std = _compute_betas_gwr(self.y, self.X, self.lwcc, wi)
-    #             predy = np.dot(X_std[i], betas)[0]
-    #             # predy = (predy * self.ystd) + self.ymean
-    #             resid = self.y[i] - predy
-    #             influ = np.dot(X_std[i], inv_xtx_xt[:, i])
-    #             w = 1
-    #         else:
-    #             betas, inv_xtx_xt = _compute_betas_gwr(self.y, self.X, self.lwcc, wi)
-    #             predy = np.dot(self.X[i], betas)[0]
-    #             resid = self.y[i] - predy
-    #             influ = np.dot(self.X[i], inv_xtx_xt[:, i])
-    #             w = 1
-
-    #     elif isinstance(self.family, (Poisson, Binomial)):
-    #         rslt = iwls(self.y, self.X, self.family, self.offset, None,
-    #                     self.fit_params['ini_params'], self.fit_params['tol'],
-    #                     self.fit_params['max_iter'], wi=wi)
-
-    #         inv_xtx_xt = rslt[5]
-    #         w = rslt[3][i][0]
-    #         influ = np.dot(self.X[i], inv_xtx_xt[:, i]) * w
-    #         predy = rslt[1][i]
-    #         resid = self.y[i] - predy
-    #         betas = rslt[0]
-
-    #     if self.fit_params['lite']:
-    #         return influ, resid, predy, betas.reshape(-1)
-    #     else:
-    #         Si = np.dot(X_std[i], inv_xtx_xt).reshape(-1)
-    #         tr_STS_i = np.sum(Si * Si * w * w)
-    #         CCT = np.diag(np.dot(inv_xtx_xt, inv_xtx_xt.T)).reshape(-1)
-    #         if not self.hat_matrix:
-    #             Si = None
-    #         return influ, resid, predy, betas.reshape(-1), w, Si, tr_STS_i, CCT
-       
-
-    def _local_fit(self, i):
+    def _local_fit(self, i): # modified local fit to enforce slope-correlation identity
         """
         Local fitting at location i.
         """

@@ -8,6 +8,9 @@ from spglm.family import Binomial, Poisson
 from sklearn.preprocessing import StandardScaler
 
 
+"""modified by: Victor Irekponor, vireks@terpmail.umd.edu"""
+
+
 
 def _compute_betas(y, x):
     """
